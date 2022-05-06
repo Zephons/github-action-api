@@ -7,7 +7,7 @@ RUN pipenv install
 
 COPY app.py /app.py
 
-COPY data/ ./data
+COPY data/model.json ./data
 
 # EXPOSE 5000
 

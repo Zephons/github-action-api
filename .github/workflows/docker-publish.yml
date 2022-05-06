@@ -29,7 +29,7 @@ jobs:
         run: docker run --name model_1 -v dataset:/data tzephons/github-action-model
 
       - name: Copy model.json from model container
-        run: docker cp model_1:data/model.json ./data
+        run: docker cp model_1:/data/model.json ./data/
 
       - name: Set outputs
         id: vars
