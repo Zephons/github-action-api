@@ -20,13 +20,16 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
+      - name: Create a docker volume
+        id: docker_volume
+        run: docker volume create dataset
+
+      - name: Run an image for model
+        id: docker_run_model
+        run: docker run --name model_1 -v dataset:/data tzephons/github-action-model
+
+      - name: Copy model.json from model container
+        run: docker cp model_1:data/model.json ./data
 
       - name: Set outputs
         id: vars
@@ -43,8 +46,9 @@ jobs:
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/github-action-api:${{ steps.vars.outputs.sha_short }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
+          tags: |
+            ${{ secrets.DOCKER_HUB_USERNAME }}/github-action-api:${{ steps.vars.outputs.sha_short }}
+            ${{ secrets.DOCKER_HUB_USERNAME }}/github-action-api
+
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

@@ -7,6 +7,8 @@ RUN pipenv install
 
 COPY app.py /app.py
 
+COPY data /data
+
 # EXPOSE 5000
 
 CMD ["pipenv", "run", "python", "app.py"]
