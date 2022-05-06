@@ -52,4 +52,4 @@ jobs:
             ${{ secrets.DOCKER_HUB_USERNAME }}/github-action-api
 
       - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+        run: echo ${{ steps.docker_build.outputs.digest }} 
