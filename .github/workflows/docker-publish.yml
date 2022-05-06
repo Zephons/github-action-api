@@ -2,6 +2,7 @@ name: CI to Docker Hub
 on:
   push:
     branches: [ main ]
+  repository_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
